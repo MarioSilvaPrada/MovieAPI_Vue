@@ -27,6 +27,7 @@ export default {
       error: null
     };
   },
+  props: ["moviesData"],
   created() {
     this.fetchData();
   },
@@ -35,17 +36,23 @@ export default {
       this.error = this.post = null;
       this.loading = true;
 
-      let API_URL = "https://api.themoviedb.org/3/";
-      let API_KEY = "?api_key=aeb5dba1f1913a3c858099a94105e7c3";
-
-      let movieId = 28;
+      switch (moviesData) {
+        case "popular":
+          return "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=aeb5dba1f1913a3c858099a94105e7c3&page=1";
+          break;
+        case "top_rated":
+          return "https://api.themoviedb.org/3/movie/top_rated?api_key=aeb5dba1f1913a3c858099a94105e7c3&page=1";
+          break;
+        case "theaters":
+          return "https://api.themoviedb.org/3/movie/now_playing?api_key=aeb5dba1f1913a3c858099a94105e7c3&page=1";
+      } 
 
       axios
-        .get(`${API_URL}discover/movie${API_KEY}&with_genres=${movieId}&sort_by=popularity.desc`)
+        .get(top_rated)
         .then(res => {
           this.loading = false;
           this.movies = res.data.results;
-        //   console.log(res.data.results)
+          //   console.log(res.data.results)
         })
         .catch(err => {
           this.loading = false;
@@ -57,36 +64,34 @@ export default {
 </script>
 
 <style>
-
 .movies-content {
-    display: flex;
-    flex-wrap: wrap;
-    margin-left:5rem;
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 5rem;
 }
 
 .movie {
-    margin: 1rem ;
+  margin: 1rem;
 }
 
 a {
-    width: 11rem;
-    position:relative;
+  width: 11rem;
+  position: relative;
 }
 
 img {
-    width: 10rem;
-    border-radius: .8rem;
+  width: 10rem;
+  border-radius: 0.8rem;
 }
 
 .rating {
-    background:#faca31;
-    color: black;
-    font-size: .7rem;
-    padding: .3rem .5rem;
-    border-radius: .3rem;
-    position:absolute;
-    right: 1rem;
-    top: -.5rem;
-
+  background: #faca31;
+  color: black;
+  font-size: 0.7rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 0.3rem;
+  position: absolute;
+  right: 1rem;
+  top: -0.5rem;
 }
 </style>

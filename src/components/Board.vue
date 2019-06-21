@@ -1,7 +1,14 @@
 <template>
   <div class="board">
-    <SideBar v-bind:genres="genres"/>
-    <Movies/>
+    <select name="movieData" v-on:change="sortValue">
+      <option value="popular" selected>Popular</option>
+      <option value="top_rated">Top Rated</option>
+      <option value="theaters">Theaters</option>
+    </select>
+    <div class="movies">
+      <SideBar v-bind:genres="genres"/>
+      <Movies v-bind:moviesData="moviesData"/>
+    </div>
   </div>
 </template>
 
@@ -10,12 +17,14 @@ import axios from "axios";
 
 import SideBar from "./SideBar";
 import Movies from "./Movies";
+import Header from "./Header";
 
 export default {
   name: "Board",
   components: {
     SideBar,
-    Movies
+    Movies,
+    Header
   },
   data() {
     return {
@@ -23,7 +32,8 @@ export default {
         loading: false,
         genres: null,
         error: null
-      }
+      },
+      moviesData: ""
     };
   },
   created() {
@@ -48,6 +58,9 @@ export default {
           this.genres.loading = false;
           this.genres.error = err;
         });
+    },
+    sortValue(e) {
+      this.moviesData = e.target.value
     }
   }
 };
@@ -56,15 +69,20 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .board {
-  width: 60rem;
+  width: 70rem;
   box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.3);
   border-radius: 1.5rem;
   background: #171934;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-self: center;
   margin: 6rem 0;
   color: white;
+}
+
+.movies {
+  display: flex;
 }
 
 .error,
