@@ -15,7 +15,7 @@ import axios from "axios";
 
 export default {
   name: "SideBar",
-  props: ['genres'],
+  props: ["genres"],
   methods: {
     onClick(id) {
       console.log(id);

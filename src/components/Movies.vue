@@ -10,6 +10,7 @@
         <p class="movie-title">{{movie.original_title}}</p>
         <p class="movie-genre">{{movie.genre_ids[0]}}</p>
         <span class="rating">{{movie.vote_average}}</span>
+        {{moviesData}}
       </a>
     </div>
   </div>
@@ -28,6 +29,11 @@ export default {
     };
   },
   props: ["moviesData"],
+  watch: {
+    dataMovie: function () {
+      console.log(this.moviesData)
+    }
+  },
   created() {
     this.fetchData();
   },
@@ -36,19 +42,23 @@ export default {
       this.error = this.post = null;
       this.loading = true;
 
-      switch (moviesData) {
-        case "popular":
-          return "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=aeb5dba1f1913a3c858099a94105e7c3&page=1";
-          break;
-        case "top_rated":
-          return "https://api.themoviedb.org/3/movie/top_rated?api_key=aeb5dba1f1913a3c858099a94105e7c3&page=1";
-          break;
-        case "theaters":
-          return "https://api.themoviedb.org/3/movie/now_playing?api_key=aeb5dba1f1913a3c858099a94105e7c3&page=1";
-      } 
+      // switch (moviesData) {
+      //   case "popular":
+      //     return "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=aeb5dba1f1913a3c858099a94105e7c3&page=1";
+      //     break;
+      //   case "top_rated":
+      //     return "https://api.themoviedb.org/3/movie/top_rated?api_key=aeb5dba1f1913a3c858099a94105e7c3&page=1";
+      //     break;
+      //   case "theaters":
+      //     return "https://api.themoviedb.org/3/movie/now_playing?api_key=aeb5dba1f1913a3c858099a94105e7c3&page=1";
+      // } 
 
+      let popular = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=aeb5dba1f1913a3c858099a94105e7c3&page=1";
+      let top_rated = "https://api.themoviedb.org/3/movie/top_rated?api_key=aeb5dba1f1913a3c858099a94105e7c3&page=1";
+      let theaters = "https://api.themoviedb.org/3/movie/now_playing?api_key=aeb5dba1f1913a3c858099a94105e7c3&page=1";
+      
       axios
-        .get(top_rated)
+        .get(popular)
         .then(res => {
           this.loading = false;
           this.movies = res.data.results;

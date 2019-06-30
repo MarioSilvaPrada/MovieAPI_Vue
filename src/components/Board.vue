@@ -61,6 +61,7 @@ export default {
     },
     sortValue(e) {
       this.moviesData = e.target.value
+      // console.log(e.target.value)
     }
   }
 };
